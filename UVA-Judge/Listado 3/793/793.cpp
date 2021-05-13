@@ -28,21 +28,17 @@ class UnionFind{
 
 int main(){
     int c,N;
-    ifstream file;
-    file.open("input.txt",ios_base::in);
-    file>>c;
+    cin>>c;
     string linea;
     for(int i = 0; i < c; i++){
-        file>>N;
+        cin>>N;
         UnionFind uf(N+1);
         char q;
         int a,b, correct = 0, incorrect = 0;
-        cout<<N<<endl;
-        getline(file,linea);
-        while(getline(file,linea), linea.compare("") != 0){
+        getline(cin,linea);
+        while(getline(cin,linea), linea.compare("") != 0){
             stringstream ss(linea);
             ss>>q>>a>>b;
-            cout<<a<<" "<<b<<endl;
             if(q == 'c'){
                 uf.unionSet(a,b);
             }
@@ -51,6 +47,8 @@ int main(){
             }
         }
         cout<<correct<<","<<incorrect<<endl;
+        if(i != c-1) cout<<endl;
+        
     }
     return 0;
 }
