@@ -3,18 +3,16 @@ using namespace std;
 
 int main(){
     int N;
-    char action;
-    while(scanf("%d",&N), N != 0){
-        cout<<N<<endl;
+    string line;
+    while(cin>>N, N != 0){
         vector<int> resistances(N+1);
         for(int i = 0; i < N; i++){
             cin>>resistances[i];
-            cout<<resistances[i]<<endl;
         }
-        while(scanf("%c",&action), action != 'E'){
-            int ri, r;
-            scanf("%d%d",&ri,&r);
-            cout<<action<<" "<<ri<<" "<<r<<endl;
+        getline(cin,line);
+        while(cin>>line, line != "END"){
+            int ri,r;
+            cin>>ri>>r;
         }
     }
 
