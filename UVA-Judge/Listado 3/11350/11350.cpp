@@ -47,10 +47,8 @@ int main(){
     getline(cin,line);
     for(int i = 0; i < N; i++){
         getline(cin,line);
-        cout<<line<<endl;
         stringstream ss(line);
         while(ss>>path){
-            cin>>path;
             if(path == 'R'){
                 a = num; b = den;
             }
