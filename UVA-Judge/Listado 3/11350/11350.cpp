@@ -40,11 +40,29 @@ class SegmentTree{
 };
 
 int main(){
-    int N;
+    int N,a=0,b=1,c=1,d=0,num=1,den=1;
     cin>>N;
-    char LR;
+    string line;
+    char path;
+    getline(cin,line);
     for(int i = 0; i < N; i++){
-        cin>>LR;
+        getline(cin,line);
+        cout<<line<<endl;
+        stringstream ss(line);
+        while(ss>>path){
+            cin>>path;
+            if(path == 'R'){
+                a = num; b = den;
+            }
+            else{
+                c = num; d = den;
+            }
+            num = a + c;
+            den = b + d;
+
+        }
+        cout<<num<<"/"<<den<<endl;
+        a=0;b=1;c=1;d=0;num=1;den=1;
 
     }
 

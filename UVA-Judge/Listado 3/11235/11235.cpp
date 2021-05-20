@@ -36,7 +36,6 @@ class SegmentTree{
             st.assign(4*n, 0);
             build(1, 0, n-1);
         }
-
         int rmq(int i, int j){ return rmq(1, 0, n-1, i, j);}
 };
 
@@ -44,25 +43,22 @@ int main(){
     int n,q,a;
     while(cin>>n>>q, n != 0){
         vector<int> A(n+1);
-        int prev, occ = 1;
+        map<int,int> occ;
         for(int i = 0; i < n; i++){
             cin>>a;
-            if(a != prev){
-                prev = a;
-                occ = 1;
-            }
-            A[i] = occ++;
+            if(occ.find(a) == occ.end()) occ[a] = 0;
+            occ[a]++;
         }
-        for(int i = 0; i < n; i++){
-            cout<<A[i]<<" ";
+        for(auto it = occ.begin(); it != occ.end(); it++){
+            cout<<it->first<<" "<<it->second<<endl;
         }
         cout<<endl;
         SegmentTree st(A);
         int i,j;
         for(int k = 0; k < q; k++){
             cin>>i>>j;
-            cout<<i<<","<<j<<endl;
-            cout<<A[st.rmq(i,j)]<<endl;
+            // cout<<i<<","<<j<<endl;
+            // cout<<A[st.rmq(i,j)]<<endl;
         }
     }
 
