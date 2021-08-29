@@ -10,45 +10,45 @@ class SegmentTree{
         
         void build(int p, int L, int R){
             if(L == R){
-                if(A[R] < 0) st[p] = -1;
-                else if(A[R] == 0) st[p] = 0;
+                if(A[R] == 0) st[p] = 0;
+                else if(A[R] < 0) st[p] = -1;
                 else st[p] = 1;
             }
             else{
                 build(left(p), L, (L+R)/2);
-                build(right(p), (L+R)/2 + 1, R);
+                build(right(p), ((L+R)/2) + 1, R);
                 int p1 = st[left(p)], p2 = st[right(p)];
-                cout<<"p1: "<<p1<<" p2: "<<p2<<endl;
-                if(p1*p2 < 0) st[p] = -1;
-                else if(p1*p2 == 0) st[p] = 0;
+                if(p1*p2 == 0) st[p] = 0;
+                else if(p1*p2 < 0) st[p] = -1;
                 else st[p] = 1;
             }
         }
 
         int rmq(int p, int L, int R, int i, int j){
-            if(i > R || j < L) return 1;
-            if(L >= i && R <= j) return st[p];
-
+            if(j < L || R < i) return -2;
+            if(i <= L && R <= j) return st[p];
             int p1 = rmq(left(p), L, (L+R)/2, i, j);
-            int p2 = rmq(right(p), (L+R)/2 +1, R, i, j);
-
-            if(p1 == -1) return p2;
-            if(p2 == -1) return p1;
+            int p2 = rmq(right(p), ((L+R)/2) +1, R, i, j);
+            if(p1 == -2) return p2;
+            if(p2 == -2) return p1;
             return p1*p2;
         }
-        void update(int p, int V, int L, int R){
-            if(L == R){
-                if(V < 0) st[p] = -1;
-                else if(V == 0) st[p] = 0;
+        int update(int i, int V, int L, int R, int p){
+            if(i < L || i > R) return st[p];
+            if(L == R && L == i){
+                if(V == 0) st[p] = 0;
+                else if(V < 0) st[p] = -1;
                 else st[p] = 1;
+                return st[p];
             }
             else{
-                build(left(p), L, (L+R)/2);
-                build(right(p), (L+R)/2 + 1, R);
+                update(i,V, L, (L+R)/2,left(p));
+                update(i,V, ((L+R)/2) + 1, R, right(p));
                 int p1 = st[left(p)], p2 = st[right(p)];
-                if(p1*p2 < 0) st[p] = -1;
-                else if(p1*p2 == 0) st[p] = 0;
+                if(p1*p2 == 0) st[p] = 0;
+                else if(p1*p2 < 0) st[p] = -1;
                 else st[p] = 1;
+                return st[p];
             }
         }
     
@@ -59,20 +59,8 @@ class SegmentTree{
             build(1, 0, n-1);
         }
         int rmq(int i, int j){ return rmq(1, 0, n-1, i, j);}
-        void printst(){
-            for(int i = 0; i <= 7; i++){
-                cout<<st[i]<<" ";
-            }
-            cout<<endl;
-        }
-        void preorder(int p){
-            if(p < 0 || p > 8) return;
-            cout<<st[p]<<" ";
-            preorder(left(p));
-            preorder(right(p));
-        }
         void update(int i, int V){
-            update(i,V,i,i);
+            update(i,V,0,n-1,1);
         }
 };
 
@@ -90,8 +78,6 @@ int main(){
             cin>>cmd>>I>>V;
             if(cmd == 'C'){
                 st.update(I-1,V);
-                st.preorder(N/2-1);
-                cout<<endl;
             }
             else{
                 int ans = st.rmq(I-1,V-1);
@@ -102,8 +88,5 @@ int main(){
         }
         cout<<endl;
     }
-
-
-
     return 0;
 }

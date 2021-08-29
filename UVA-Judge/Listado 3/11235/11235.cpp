@@ -1,66 +1,124 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define pf                  printf
+#define sf(a)               scanf("%d",&a)
+#define sfl(a)              scanf("%lld",&a)
+#define sff(a,b)            scanf("%d %d",&a,&b)
+#define sffl(a,b)           scanf("%lld %lld",&a,&b)
+#define sfff(a,b,c)         scanf("%d %d %d",&a,&b,&c)
+#define sfffl(a,b,c)        scanf("%lld %lld %lld",&a,&b,&c)
+#define sffff(a,b,c,d)      scanf("%d %d %d %d",&a,&b,&c,&d)
+#define sffffl(a,b,c,d)     scanf("%lld %lld %lld %lld",&a,&b,&c,&d)
+#define sfffff(a,b,c,d,e)   scanf("%d %d %d %d %d",&a,&b,&c,&d,&e)
+#define sfffffl(a,b,c,d,e)  scanf("%lld %lld %lld %lld %lld",&a,&b,&c,&d,&e)
+#define sfc(a)              scanf("%c",&a)
+#define pii                 pair<int,int>
+#define ms(a,b)             memset(a,b,sizeof(a))
+#define pb(a)               push_back(a)
+#define pbp(a,b)            push_back({a,b})
+#define db                  double
+#define ft                  float
+#define ll                  long long
+#define ull                 unsigned long long
+#define pii                 pair<int,int>
+#define ff                  first
+#define ss                  second
+#define sz(x)               x.size()
+#define all(x)              x.begin(),x.end()
+#define CIN                 ios_base::sync_with_stdio(0); cin.tie(0)
+#define max3(a, b, c)       max(a, b) > max(b, c) ? max(a, b) : max(b, c)
+#define min3(a, b, c)       min(a, b) < min(b, c) ? min(a, b) : min(b, c)
+#define for0(i,n)          for(int i=0;i<n;i++)
+#define for1(i,n)          for(int i=1;i<=n;i++)
+#define forrev(i,n)        for(int i=n-1; i>=0; i--)
+#define forab(i,a,b)       for(int i=a;i<=b;i++)
+#define forba(i,b,a)       for(int i=b;i>=a;i--)
+#define stlloop(x)          for(__typeof(x.begin()) it=x.begin();it!=x.end();it++)
+#define gcd(a, b)           __gcd(a, b)
+#define lcm(a, b)           ((a)*((b)/gcd(a,b)))
+#define case1(z)            cout<<"Case "<<z<<": "
+#define case2(z)            printf("Case %d: ",z)
+#define PI                  acos(-1) //3.14159265358979323846264338328
+#define valid(tx,ty)        tx>=0 && tx<row && ty>=0 && ty<col
+#define intlim              2147483648
+#define mx                  100005
+#define inf                 100000008
 
-class SegmentTree{
-    private:
-        vector<int> st, A;
-        int n;
-        int left(int p) { return p << 1;}
-        int right(int p) { return (p << 1) + 1;}
-        
-        void build(int p, int L, int R){
-            if(L == R) st[p] = R;
-            else{
-                build(left(p), L, (L+R)/2);
-                build(right(p), (L+R)/2 + 1, R);
-                int p1 = st[left(p)], p2 = st[right(p)];
-                st[p] = (A[p1] >= A[p2]) ? p1 : p2;
-            }
-        }
+int input[mx],tree[3*mx],cnt[mx],start[mx];
+map<int,int> mp;
 
-        int rmq(int p, int L, int R, int i, int j){
-            if(i > R || j < L) return -1;
-            if(L >= i && R <= j) return st[p];
-
-            int p1 = rmq(left(p), L, (L+R)/2, i, j);
-            int p2 = rmq(right(p), (L+R)/2 +1, R, i, j);
-
-            if(p1 == -1) return p2;
-            if(p2 == -1) return p1;
-            return (A[p1] >= A[p2]) ? p1 : p2;
-        }
-    
-    public:
-        SegmentTree(const vector<int> &_A){
-            A = _A; n = (int)A.size();
-            st.assign(4*n, 0);
-            build(1, 0, n-1);
-        }
-        int rmq(int i, int j){ return rmq(1, 0, n-1, i, j);}
-};
-
-int main(){
-    int n,q,a;
-    while(cin>>n>>q, n != 0){
-        vector<int> A(n+1);
-        map<int,int> occ;
-        for(int i = 0; i < n; i++){
-            cin>>a;
-            if(occ.find(a) == occ.end()) occ[a] = 0;
-            occ[a]++;
-        }
-        for(auto it = occ.begin(); it != occ.end(); it++){
-            cout<<it->first<<" "<<it->second<<endl;
-        }
-        cout<<endl;
-        SegmentTree st(A);
-        int i,j;
-        for(int k = 0; k < q; k++){
-            cin>>i>>j;
-            // cout<<i<<","<<j<<endl;
-            // cout<<A[st.rmq(i,j)]<<endl;
-        }
+void build (int node,int low,int high)
+{
+    if(low==high)
+    {
+        tree[node]=cnt[low];
+        return;
     }
+    int mid=(low+high)/2;
+    int left=2*node;
+    int right=2*node+1;
+    build(left,low,mid);
+    build(right,mid+1,high);
+    tree[node]=max(tree[left],tree[right]);
+}
 
+int query(int node,int low,int high,int qlow,int qhigh)
+{
+    if(low>qhigh || high<qlow) return -inf;
+    else if(low>=qlow && high<=qhigh)
+    {
+        return tree[node];
+    }
+    int mid=(low+high)/2;
+    int left=2*node;
+    int right=2*node+1;
+    int l=query(left,low,mid,qlow,qhigh);
+    int r=query(right,mid+1,high,qlow,qhigh);
+    return max(l,r);
+}
+
+int main()
+{
+    int n,q;
+    while(sf(n)==1 && n!=0)
+    {
+        sf(q);
+        for1(i,n)
+        {
+            sf(input[i]);
+            mp[input[i]]++;
+        }
+        int y=-inf,k;
+        for1(i,n)
+        {
+            int x=mp[input[i]];
+            cnt[i]=x;
+            if(input[i]!=y)
+            {
+                k=i;
+                y=input[i];
+            }
+            start[i]=k;
+        }
+        build(1,1,n);
+        for1(i,q)
+        {
+            int qlow,qhigh,cnt1,cnt2,cnt3;
+            sff(qlow,qhigh);
+            if(input[qlow]!=input[qhigh])
+            {
+                int k=start[qlow]+cnt[qlow];
+                cnt1=k-qlow;
+                cnt2=qhigh-start[qhigh]+1;
+                cnt3=query(1,1,n,k,start[qhigh]-1);
+                pf("%d\n",max3(cnt1,cnt2,cnt3));
+            }
+            else pf("%d\n",qhigh-qlow+1);
+        }
+        ms(tree,0);
+        ms(cnt,0);
+        ms(start,0);
+        mp.clear();
+    }
     return 0;
 }

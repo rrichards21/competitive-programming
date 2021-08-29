@@ -1,0 +1,8 @@
+https://www.spoj.com/problems/NHAY/ (Enlaces a un sitio externo.)
+http://www.spoj.com/problems/ARDA1/ (Enlaces a un sitio externo.)
+http://www.spoj.com/problems/PLD/ (Enlaces a un sitio externo.)
+UVA 12526 - Cellphone Typing
+http://www.spoj.com/problems/LCS/ (Enlaces a un sitio externo.)
+https://www.spoj.com/problems/DICT/ (Enlaces a un sitio externo.)
+https://www.spoj.com/problems/SARRAY/ (Enlaces a un sitio externo.)  (se considerán como buenas soluciones con 50 o más puntos)
+https://www.codechef.com/problems/TASTR
