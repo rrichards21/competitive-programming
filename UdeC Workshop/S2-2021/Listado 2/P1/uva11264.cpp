@@ -24,22 +24,32 @@ int main(){
         for(int i = 0; i < n; i++){
             cin>>coins[i];
         }
-        long int max_w = coins[coins.size()-1]*(n-1);
-        int max_c = -1;
-        for(unsigned long int i = 3; i < max_w; i++){
-            cout<<i<<endl;
-            withdraw(i,coins, coins.size()-1);
-            int tam = used_c.size();
-            if(tam > max_c) max_c = tam;
-            if(max_c == n){
-                used_c.clear();
-                break;
+        int max_c = 1;
+        //cambiar vector por int acumulador
+        vector<int> acc(n,0);
+        acc[0] = coins[0];
+
+        for(int i = 1; i < coins.size()-1; i++){
+            if(coins[i] + acc[i-1] < coins[i+1]){
+                acc[i] = coins[i] + acc[i-1];
+                max_c++;
             }
-            used_c.clear();
+            else{
+                acc[i] = acc[i-1];
+            }
         }
+        max_c++;
         cout<<max_c<<endl;
 
     }
 
     return 0;
 }
+
+
+//Idea
+/*
+Ir sumando desde la primera moneda el valor más cercano posible que no sobrepase el valor de la siguiente moneda
+
+
+*/
