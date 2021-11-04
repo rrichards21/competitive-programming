@@ -1,3 +1,10 @@
+/*
+Autor: Rodrigo Richards
+Coin Collector - 11264
+rrichards - 958045
+Código realizado por mí
+*/
+
 #include <bits/stdc++.h>
 using namespace std;
 
